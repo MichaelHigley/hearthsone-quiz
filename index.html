@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch/templates/basic_search.css" />
+</head>
+
+<body>
+  <div class="wrapper">
+    <div id="searchbox" focus></div>
+    <div id="hits"></div>
+  </div>
+</body>
+<script
+  src="https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch@0.3.2/dist/instant-meilisearch.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4"></script>
+<script>
+  const search = instantsearch({
+    indexName: "cards",
+    searchClient: instantMeiliSearch(
+      "http://localhost:7700",
+    )
+  });
+  search.addWidgets([
+    instantsearch.widgets.searchBox({
+      container: "#searchbox"
+    }),
+    instantsearch.widgets.configure({ hitsPerPage: 8 }),
+    instantsearch.connectors.connectHits(
+      (renderOptions, isFirstRender) => {
+        const { hits } = renderOptions
+
+        if (isFirstRender) return
+
+        document.querySelector('#hits').innerHTML = `
+          <ul>
+            ${hits.map(item => `
+              <li>
+                <img src="${item.image_url}"/>
+                <audio controls>
+                  <source src="${item.sound_url}"/>
+                </audio>
+              </li>
+            `).join('')}
+          </ul>
+        `;
+      }
+    )(),
+  ]);
+  search.start();
+</script>
+
+</html>
