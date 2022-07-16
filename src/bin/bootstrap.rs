@@ -69,6 +69,8 @@ impl CollectionItem {
         let only_minion_cards = collection_set
             .into_iter()
             .filter(|card| card.card_type == Self::MINION_TAG)
+            // "CORE" cards seems to be forbidden access from the APIs.
+            .filter(|card| card.id.contains("CORE"))
             .collect();
         Ok(only_minion_cards)
     }
