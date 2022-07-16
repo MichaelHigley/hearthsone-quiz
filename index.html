@@ -17,9 +17,7 @@
 <script>
   const search = instantsearch({
     indexName: "cards",
-    searchClient: instantMeiliSearch(
-      `${location.protocol}//${location.hostname}:7700`,
-    )
+    searchClient: instantMeiliSearch(location.origin)
   });
   search.addWidgets([
     instantsearch.widgets.searchBox({
