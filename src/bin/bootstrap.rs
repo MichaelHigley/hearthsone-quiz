@@ -1,3 +1,8 @@
+///! initial process to fetch all of the HeathStone cards from APIs,
+///! then bootstrap the search database used by the frontend to perform lookups
+///!
+///! *currently using [meilisearch](https://github.com/meilisearch/meilisearch), but could be implemented for any backend*
+///!
 use std::{
     collections::{HashMap, HashSet},
     env,
@@ -109,10 +114,6 @@ impl CollectionItem {
     }
 }
 
-/// initial process to fetch all of the HeathStone cards from APIs,
-/// then bootstrap the search database used by the frontend to perform lookups
-///
-/// *currently using [meilisearch](https://github.com/meilisearch/meilisearch), but could be implemented for any backend*
 #[tokio::main]
 async fn main() -> Result<()> {
     let host_addr = env::var("DB_HOST").unwrap_or_else(|_| "http://localhost:7700".to_string());

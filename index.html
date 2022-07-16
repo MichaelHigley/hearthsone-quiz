@@ -32,18 +32,25 @@
 
         if (isFirstRender) return
 
-        document.querySelector('#hits').innerHTML = `
-          <ul>
-            ${hits.map(item => `
-              <li>
-                <img src="${item.image_url}"/>
-                <audio controls>
-                  <source src="${item.sound_url}"/>
-                </audio>
-              </li>
-            `).join('')}
-          </ul>
-        `;
+        const listElement = document.createElement('ul');
+        hits.forEach(item => {
+          const image = document.createElement('img')
+          image.src = item.image_url;
+
+          const audioSource = document.createElement('source')
+          audioSource.src = item.sound_urls.Play
+
+          const audio = document.createElement('audio')
+          audio.setAttribute('controls', true)
+          audio.volume = 0.2
+          audio.append(audioSource)
+
+          const listItem = document.createElement('li')
+          listItem.append(image, audio)
+
+          listElement.append(listItem)
+        })
+        document.querySelector('#hits').replaceChildren(listElement);
       }
     )(),
   ]);
