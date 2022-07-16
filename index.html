@@ -3,8 +3,6 @@
 
 <head>
   <meta charset="utf-8" />
-  <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch/templates/basic_search.css" />
 </head>
 
 <body>
@@ -27,7 +25,7 @@
     instantsearch.widgets.searchBox({
       container: "#searchbox"
     }),
-    instantsearch.widgets.configure({ hitsPerPage: 8 }),
+    instantsearch.widgets.configure({ hitsPerPage: 6 }),
     instantsearch.connectors.connectHits(
       (renderOptions, isFirstRender) => {
         const { hits } = renderOptions
