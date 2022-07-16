@@ -1,0 +1,6 @@
+*
+
+!startup.sh
+!/src
+!Cargo.*
+!index.html
