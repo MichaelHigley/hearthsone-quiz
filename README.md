@@ -1,1 +1,1 @@
-# hearthsone-quiz
+# hearthstone-quiz

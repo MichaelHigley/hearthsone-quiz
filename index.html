@@ -3,8 +3,6 @@
 
 <head>
   <meta charset="utf-8" />
-  <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch/templates/basic_search.css" />
 </head>
 
 <body>
@@ -19,33 +17,38 @@
 <script>
   const search = instantsearch({
     indexName: "cards",
-    searchClient: instantMeiliSearch(
-      "http://localhost:7700",
-    )
+    searchClient: instantMeiliSearch(location.origin)
   });
   search.addWidgets([
     instantsearch.widgets.searchBox({
       container: "#searchbox"
     }),
-    instantsearch.widgets.configure({ hitsPerPage: 8 }),
+    instantsearch.widgets.configure({ hitsPerPage: 6 }),
     instantsearch.connectors.connectHits(
       (renderOptions, isFirstRender) => {
         const { hits } = renderOptions
 
         if (isFirstRender) return
 
-        document.querySelector('#hits').innerHTML = `
-          <ul>
-            ${hits.map(item => `
-              <li>
-                <img src="${item.image_url}"/>
-                <audio controls>
-                  <source src="${item.sound_url}"/>
-                </audio>
-              </li>
-            `).join('')}
-          </ul>
-        `;
+        const listElement = document.createElement('ul');
+        hits.forEach(item => {
+          const image = document.createElement('img')
+          image.src = item.image_url;
+
+          const audioSource = document.createElement('source')
+          audioSource.src = item.sound_urls.Play
+
+          const audio = document.createElement('audio')
+          audio.setAttribute('controls', true)
+          audio.volume = 0.2
+          audio.append(audioSource)
+
+          const listItem = document.createElement('li')
+          listItem.append(image, audio)
+
+          listElement.append(listItem)
+        })
+        document.querySelector('#hits').replaceChildren(listElement);
       }
     )(),
   ]);

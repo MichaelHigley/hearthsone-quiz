@@ -1,0 +1,7 @@
+*
+
+!startup.sh
+!/src
+!Cargo.*
+!index.html
+!nginx.conf
