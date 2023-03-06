@@ -22,7 +22,7 @@ RUN apt install -y ./meilisearch.deb
 RUN apt install -y nginx gettext-base
 COPY nginx.conf nginx.conf.template
 # copy executables from rust-builder
-COPY --from=rust-builder /home/rust/src/target/release/bootstrap .
+COPY --from=rust-builder /home/rust/src/target/release/sound-quiz .
 COPY --from=rust-builder /usr/local/cargo/bin/basic-http-server ./webserver
 COPY --from=node-builder /home/node/src/index.html .
 COPY startup.sh .
