@@ -16,8 +16,7 @@ COPY index.html .
 FROM debian:stable-slim
 # meilisearch rust sdk only compatible with v0.27.0
 RUN apt update && apt install -y curl
-RUN curl -LsSf 'https://github.com/meilisearch/meilisearch/releases/download/v0.27.0/meilisearch.deb' > meilisearch.deb
-RUN apt install -y ./meilisearch.deb
+RUN curl -L https://install.meilisearch.com | sh
 # install nginx
 RUN apt install -y nginx gettext-base
 COPY nginx.conf nginx.conf.template
