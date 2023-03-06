@@ -1,23 +1,15 @@
 [package]
-name = "hs-quiz"
+name = "sound-quiz"
 version = "0.1.0"
 edition = "2021"
 
-[[bin]]
-name = "bootstrap"
-path = "src/bin/bootstrap.rs"
-
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-anyhow = "1.0.57"
-futures = "0.3.21"
-meilisearch-sdk = "0.17.0"
-once_cell = "1.13.0"
-regex = "1.6.0"
-reqwest = { version = "0.11.10", features = ["rustls-tls"] } # remove link to libc with "rustls-tls"
-serde = { version = "1.0.137", features = ["derive"] }
-serde_json = "1.0.81"
-tokio = { version = "1.18.2", features = ["full"] }
+anyhow = "1.0.69"
+meilisearch-sdk = "0.22.0"
+regex = "1.7.1"
+# remove link to libc with "rustls-tls"
+reqwest = { version = "0.11.14", features = ["rustls-tls", "blocking"] }
+tokio = { version = "1.26.0", features = ["full"] }
 
+serde = { version = "1.0.152", features = ["derive"] }
+serde_json = "1.0.94"
