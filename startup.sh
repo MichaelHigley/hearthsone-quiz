@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # substitube environment variables into nginx config
-envsubst < ./nginx.conf.template > /etc/nginx/nginx.conf
+cat nginx.conf.template | sed "s/PORT/$PORT/g" > /etc/nginx/nginx.conf
 echo "Generated nginx.confg:"
 cat /etc/nginx/nginx.conf
 
@@ -9,4 +9,4 @@ cat /etc/nginx/nginx.conf
 nginx
 meilisearch &
 sleep 15 && ./bootstrap &
-./webserver --addr "0.0.0.0:4000"
+python3 -m http.server 4000

@@ -1,8 +1,6 @@
-FROM rust:slim as rust-builder
+FROM rust:alpine as rust-builder
 WORKDIR /home/rust/src
-RUN apt update && apt install -y libssl-dev pkg-config
-# temporarily using default web server
-RUN cargo install basic-http-server
+RUN apk --no-cache add musl-dev openssl-dev
 COPY src/ src/
 COPY Cargo.* .
 RUN cargo build --release
@@ -13,16 +11,14 @@ WORKDIR /home/node/src
 COPY index.html . 
 
 
-FROM debian:stable-slim
-# meilisearch rust sdk only compatible with v0.27.0
-RUN apt update && apt install -y curl
-RUN curl -L https://install.meilisearch.com | sh
+FROM getmeili/meilisearch 
 # install nginx
-RUN apt install -y nginx gettext-base
+RUN apk --no-cache add nginx
 COPY nginx.conf nginx.conf.template
-# copy executables from rust-builder
-COPY --from=rust-builder /home/rust/src/target/release/sound-quiz .
-COPY --from=rust-builder /usr/local/cargo/bin/basic-http-server ./webserver
+# simple webserver
+RUN apk --no-cache add python3
+# copy bootstrap executable from rust-builder
+COPY --from=rust-builder /home/rust/src/target/release/sound-quiz ./bootstrap
 COPY --from=node-builder /home/node/src/index.html .
 COPY startup.sh .
 
