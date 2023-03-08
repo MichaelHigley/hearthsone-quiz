@@ -1,27 +1,32 @@
-FROM rust:alpine as rust-builder
+FROM rust:slim-bullseye as rust-builder
 WORKDIR /home/rust/src
-RUN apk --no-cache add musl-dev openssl-dev
+RUN apt update
+RUN apt install -y pkg-config libssl-dev build-essential
 COPY src/ src/
 COPY Cargo.* .
-RUN cargo build --release
+RUN cargo build --release --locked 
 
 
-FROM node:alpine as node-builder
+FROM scratch as site-builder
 WORKDIR /home/node/src
 COPY index.html . 
 
 
-FROM getmeili/meilisearch 
+FROM debian:bullseye-slim
 # install nginx
-RUN apk --no-cache add nginx
+RUN apt update
+RUN apt install -y nginx openssl curl libssl-dev
 COPY nginx.conf nginx.conf.template
 # simple webserver
-RUN apk --no-cache add python3
+RUN apt install -y python3
+# Install Meilisearch latest version from the script
+RUN curl -L https://install.meilisearch.com | sh
 # copy bootstrap executable from rust-builder
 COPY --from=rust-builder /home/rust/src/target/release/sound-quiz ./bootstrap
-COPY --from=node-builder /home/node/src/index.html .
+COPY --from=site-builder /home/node/src/index.html .
 COPY startup.sh .
 
+ENV RUST_BACKTRACE=full
 ENV RUST_LOG=info
 ENV MEILI_HTTP_ADDR=0.0.0.0:7700
 

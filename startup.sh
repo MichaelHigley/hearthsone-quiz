@@ -7,6 +7,6 @@ cat /etc/nginx/nginx.conf
 
 # run nginx, meilisearch, data bootstrap, and webserver in parallel
 nginx
-meilisearch &
-sleep 15 && ./bootstrap &
+./meilisearch &
+sleep 5 && ./bootstrap &
 python3 -m http.server 4000
